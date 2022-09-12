@@ -43,7 +43,7 @@ func CreateCategory(c *fiber.Ctx) error {
 // @Summary      List available categories
 // @Produce      json
 // @Router /api/v1/category [get]
-// @Success 200 {object} controllers.ListCategoryResponse "ok"
+// @Success 200 {object} controllers.ListCategoriesResponse "ok"
 func ListCategories(c *fiber.Ctx) error {
 	ctx := utils.GetRequestContext(c)
 

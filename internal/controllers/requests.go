@@ -10,7 +10,7 @@ type AddCategoryRequest struct {
 
 type AddCategoryResponse = models.Category
 
-type ListCategoryResponse = []models.Category
+type ListCategoriesResponse = []models.Category
 
 type AddPetRequest struct {
 	Name       string `json:"name"`

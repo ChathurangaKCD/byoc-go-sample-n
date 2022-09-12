@@ -37,6 +37,6 @@ func (c CategoryController) AddCategory(ctx context.Context, request AddCategory
 	return &category, nil
 }
 
-func (c CategoryController) ListCategories(ctx context.Context) (ListCategoryResponse, error) {
+func (c CategoryController) ListCategories(ctx context.Context) (ListCategoriesResponse, error) {
 	return c.categoryRepository.GetAll(ctx)
 }

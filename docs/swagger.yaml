@@ -1,4 +1,32 @@
+basePath: /
+definitions:
+  controllers.AddPetRequest:
+    properties:
+      available:
+        type: boolean
+      category_id:
+        type: string
+      name:
+        type: string
+    type: object
+host: localhost:8000
 info:
   contact: {}
-paths: {}
+  description: This is a sample swagger
+  title: Choreo sample api
+  version: "1.0"
+paths:
+  /api/v1/pet/{id}:
+    post:
+      parameters:
+      - description: Pet ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/controllers.AddPetRequest'
 swagger: "2.0"

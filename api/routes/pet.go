@@ -9,31 +9,39 @@ import (
 
 func RegisterPetRoutes(router fiber.Router) {
 	r := router.Group("/pet")
-	r.Post("/", func(c *fiber.Ctx) error {
-		ctx := utils.GetRequestContext(c)
-		var req controllers.AddPetRequest
+	r.Post("/", CreatePet)
+	r.Get("/:id", GetPet)
+}
 
-		if err := c.BodyParser(&req); err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"status":  "error",
-				"details": "failed to parse payload",
-			})
-		}
+// CreatePet
+// @Param id path int true "Pet ID"
+// @Router /api/v1/pet/{id} [post]
+// @Success 200 {object} controllers.AddPetRequest "ok"
+func CreatePet(c *fiber.Ctx) error {
+	ctx := utils.GetRequestContext(c)
+	var req controllers.AddPetRequest
 
-		res, err := petController.AddPet(ctx, req)
-		if err != nil {
-			return err
-		}
-		return c.Status(fiber.StatusOK).JSON(res)
-	})
-	r.Get("/:id", func(c *fiber.Ctx) error {
-		ctx := utils.GetRequestContext(c)
-		id := c.Params("id")
+	if err := c.BodyParser(&req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"status":  "error",
+			"details": "failed to parse payload",
+		})
+	}
 
-		res, err := petController.GetPetById(ctx, id)
-		if err != nil {
-			return err
-		}
-		return c.Status(fiber.StatusOK).JSON(res)
-	})
+	res, err := petController.AddPet(ctx, req)
+	if err != nil {
+		return err
+	}
+	return c.Status(fiber.StatusOK).JSON(res)
+}
+
+func GetPet(c *fiber.Ctx) error {
+	ctx := utils.GetRequestContext(c)
+	id := c.Params("id")
+
+	res, err := petController.GetPetById(ctx, id)
+	if err != nil {
+		return err
+	}
+	return c.Status(fiber.StatusOK).JSON(res)
 }

@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"sync"
 
@@ -11,8 +10,6 @@ import (
 
 	"example.choreo.dev/internal/models"
 )
-
-var ErrRecordNotFound = errors.New("record not found")
 
 type petRepository struct {
 	store *[]models.Pet
@@ -56,7 +53,7 @@ func (p petRepository) List(ctx context.Context) ([]models.Pet, error) {
 	return *p.store, nil
 }
 
-func (p petRepository) GetPetById(ctx context.Context, id string) (*models.Pet, error) {
+func (p petRepository) GetById(ctx context.Context, id string) (*models.Pet, error) {
 	p.lock.RLock()
 	defer p.lock.RUnlock()
 	idx := slices.IndexFunc(*p.store, func(e models.Pet) bool {

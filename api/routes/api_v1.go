@@ -9,5 +9,6 @@ func Initialize(app *fiber.App) {
 
 	RegisterHealthRoutes(app)
 	apiVersion := app.Group("/api/v1")
-	RegisterPetRoutes(apiVersion)
+	registerPetRoutes(apiVersion)
+	registerCategoryRoutes(apiVersion)
 }

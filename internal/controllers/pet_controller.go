@@ -3,6 +3,7 @@ package controllers
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
@@ -13,27 +14,34 @@ import (
 )
 
 type PetController struct {
-	petRepository models.PetRepository
+	petRepository      models.PetRepository
+	categoryRepository models.CategoryRepository
 }
 
-func NewPetController(petRepository models.PetRepository) *PetController {
-	return &PetController{petRepository: petRepository}
+func NewPetController(petRepository models.PetRepository, categoryRepository models.CategoryRepository) *PetController {
+	return &PetController{petRepository, categoryRepository}
 }
 
-func (c PetController) AddPet(ctx context.Context, request AddPetRequest) (*models.Pet, error) {
+func (c PetController) AddPet(ctx context.Context, request AddPetRequest) (*AddPetResponse, error) {
 	var pet models.Pet
 	if err := copier.Copy(&pet, request); err != nil {
 		return nil, err
 	}
-	err := c.petRepository.Add(ctx, &pet)
+	category, err := c.categoryRepository.FindById(ctx, request.CategoryId)
 	if err != nil {
+		return nil, err
+	}
+	if category == nil {
+		return nil, fiber.NewError(http.StatusBadRequest, fmt.Sprintf("invalid category id [%s]", request.CategoryId))
+	}
+	if err := c.petRepository.Add(ctx, &pet); err != nil {
 		return nil, err
 	}
 	return &pet, nil
 }
 
-func (c PetController) GetPetById(ctx context.Context, petId string) (*models.Pet, error) {
-	pet, err := c.petRepository.GetPetById(ctx, petId)
+func (c PetController) GetPetById(ctx context.Context, petId string) (*GetPetByIdResponse, error) {
+	pet, err := c.petRepository.GetById(ctx, petId)
 	if err != nil {
 		if errors.Is(err, repositories.ErrRecordNotFound) {
 			return nil, fiber.NewError(http.StatusNotFound, "record not found")

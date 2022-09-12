@@ -15,5 +15,5 @@ type PetRepository interface {
 	Add(ctx context.Context, pet *Pet) error
 	Update(ctx context.Context, update *Pet) error
 	List(ctx context.Context) ([]Pet, error)
-	GetPetById(ctx context.Context, id string) (*Pet, error)
+	GetById(ctx context.Context, id string) (*Pet, error)
 }

@@ -16,10 +16,12 @@ type petRepository struct {
 	lock  *sync.RWMutex
 }
 
-func NewPetRepository() models.PetRepository {
-	pets := make([]models.Pet, 0)
+func NewPetRepository(initialData []models.Pet) models.PetRepository {
+	if initialData == nil {
+		initialData = make([]models.Pet, 0)
+	}
 	return &petRepository{
-		store: &pets,
+		store: &initialData,
 		lock:  &sync.RWMutex{},
 	}
 }

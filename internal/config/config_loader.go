@@ -1,6 +1,7 @@
 package config
 
 import (
+	"encoding/json"
 	"log"
 	"os"
 	"strconv"
@@ -11,8 +12,9 @@ const (
 )
 
 var (
-	EnvName        = "ENV"
-	MaxPetsAllowed = "MAX_PETS_ALLOWED"
+	EnvName         = "ENV"
+	initialDataPath = "INIT_DATA_PATH"
+	MaxPetsAllowed  = "MAX_PETS_ALLOWED"
 )
 
 var config Config
@@ -23,12 +25,26 @@ func GetConfig() *Config {
 
 func LoadConfig() (*Config, error) {
 	config = Config{
-		Port:           DefaultPort,
-		Env:            os.Getenv(EnvName),
-		MaxPetsAllowed: getEnvInt(MaxPetsAllowed, 5),
+		Port:            DefaultPort,
+		Env:             os.Getenv(EnvName),
+		InitialDataPath: os.Getenv(initialDataPath),
+		MaxPetsAllowed:  getEnvInt(MaxPetsAllowed, 5),
 	}
-
 	return &config, nil
+}
+
+func LoadInitialData() (data InitialData) {
+	if config.InitialDataPath == "" {
+		return
+	}
+	contents, err := os.ReadFile(config.InitialDataPath)
+	if err != nil {
+		log.Fatalf("failed to read initial data at [%s]: %s", config.InitialDataPath, err)
+	}
+	if err := json.Unmarshal(contents, &data); err != nil {
+		log.Fatalf("failed to unmarshal initial data at [%s]: %s", config.InitialDataPath, err)
+	}
+	return
 }
 
 func getEnvInt(key string, defaultVal int) int {

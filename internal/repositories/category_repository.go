@@ -14,10 +14,12 @@ type categoryRepository struct {
 	lock  *sync.RWMutex
 }
 
-func NewCategoryRepository() models.CategoryRepository {
-	items := make([]models.Category, 0)
+func NewCategoryRepository(initialData []models.Category) models.CategoryRepository {
+	if initialData == nil {
+		initialData = make([]models.Category, 0)
+	}
 	return &categoryRepository{
-		store: &items,
+		store: &initialData,
 		lock:  &sync.RWMutex{},
 	}
 }

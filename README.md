@@ -11,6 +11,7 @@ go build main.go && go run main.go
 Generated using Go annotations https://github.com/swaggo/swag
 
 ```shell
+# .git/hooks/pre-commit
 swag init
 ```
 

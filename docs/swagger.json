@@ -6,8 +6,6 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:8000",
-    "basePath": "/",
     "paths": {
         "/api/v1/category": {
             "get": {

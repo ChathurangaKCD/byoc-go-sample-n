@@ -23,7 +23,7 @@ import (
 // @version 1.0
 // @description This is a sample swagger
 // @host localhost:8000
-// @BasePath /
+// @BasePath
 func main() {
 	app := fiber.New(fiber.Config{
 		AppName:               "choreo-example-app",

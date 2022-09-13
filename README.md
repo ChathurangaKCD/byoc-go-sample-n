@@ -13,3 +13,8 @@ Generated using Go annotations https://github.com/swaggo/swag
 ```shell
 swag init
 ```
+
+#### Load initial data ( optional )
+
+1. Set env in Choreo DevOps portal`INIT_DATA_PATH=<some_path>`
+2. Mount the file contents of `configs/initial_data.json` in the path specified in step 1.

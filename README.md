@@ -4,6 +4,7 @@
 
 ```shell
 go build main.go && go run main.go
+
 ```
 
 #### Generate API definitions
